@@ -192,6 +192,13 @@
             color: #ff9999;
         }
         
+        .recommendation {
+            font-size: 14px;
+            color: #aaa;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
         .race-class-group {
             display: flex;
             gap: 20px;
@@ -297,12 +304,13 @@
         
         <!-- Seção 2: Atributos -->
         <div class="section">
-            <h2>2. Atributos (5-13 pontos cada)</h2>
+            <h2>2. Atributos (1-20 pontos cada)</h2>
+            <div class="recommendation">Recomendado: 5, 7, 9, 11, 13</div>
             <div class="stats-grid">
                 <div class="stat-box">
                     <label for="forca">Força</label>
                     <div class="stat-value">
-                        <input type="number" id="forca" min="5" max="13" value="5" style="width: 60px; text-align: center;">
+                        <input type="number" id="forca" min="1" max="20" value="5" style="width: 60px; text-align: center;">
                     </div>
                     <div class="modifier">Modificador: <span id="modForca">-2</span></div>
                 </div>
@@ -310,7 +318,7 @@
                 <div class="stat-box">
                     <label for="destreza">Destreza</label>
                     <div class="stat-value">
-                        <input type="number" id="destreza" min="5" max="13" value="5" style="width: 60px; text-align: center;">
+                        <input type="number" id="destreza" min="1" max="20" value="5" style="width: 60px; text-align: center;">
                     </div>
                     <div class="modifier">Modificador: <span id="modDestreza">-2</span></div>
                 </div>
@@ -318,7 +326,7 @@
                 <div class="stat-box">
                     <label for="constituicao">Constituição</label>
                     <div class="stat-value">
-                        <input type="number" id="constituicao" min="5" max="13" value="5" style="width: 60px; text-align: center;">
+                        <input type="number" id="constituicao" min="1" max="20" value="5" style="width: 60px; text-align: center;">
                     </div>
                     <div class="modifier">Modificador: <span id="modConstituicao">-2</span></div>
                 </div>
@@ -326,7 +334,7 @@
                 <div class="stat-box">
                     <label for="inteligencia">Inteligência</label>
                     <div class="stat-value">
-                        <input type="number" id="inteligencia" min="5" max="13" value="5" style="width: 60px; text-align: center;">
+                        <input type="number" id="inteligencia" min="1" max="20" value="5" style="width: 60px; text-align: center;">
                     </div>
                     <div class="modifier">Modificador: <span id="modInteligencia">-2</span></div>
                 </div>
@@ -334,15 +342,16 @@
                 <div class="stat-box">
                     <label for="carisma">Carisma</label>
                     <div class="stat-value">
-                        <input type="number" id="carisma" min="5" max="13" value="5" style="width: 60px; text-align: center;">
+                        <input type="number" id="carisma" min="1" max="20" value="5" style="width: 60px; text-align: center;">
                     </div>
                     <div class="modifier">Modificador: <span id="modCarisma">-2</span></div>
                 </div>
                 
                 <div class="stat-box">
                     <label for="resistencia">Resistência</label>
-                    <div class="stat-value" id="resistenciaValor">14</div>
-                    <div class="modifier">(Constituição + 10)</div>
+                    <div class="stat-value" id="resistenciaValor">8</div>
+                    <div class="modifier">(Mod. Constituição + 10)</div>
+                    <div class="recommendation">Ex: 10 CONST = +0 mod = 10 resistência</div>
                 </div>
             </div>
         </div>
@@ -633,14 +642,22 @@
             const inteligencia = parseInt(document.getElementById('inteligencia').value) || 5;
             const carisma = parseInt(document.getElementById('carisma').value) || 5;
             
-            document.getElementById('modForca').textContent = calcularModificador(forca);
-            document.getElementById('modDestreza').textContent = calcularModificador(destreza);
-            document.getElementById('modConstituicao').textContent = calcularModificador(constituicao);
-            document.getElementById('modInteligencia').textContent = calcularModificador(inteligencia);
-            document.getElementById('modCarisma').textContent = calcularModificador(carisma);
+            // Calcular modificadores
+            const modForca = calcularModificador(forca);
+            const modDestreza = calcularModificador(destreza);
+            const modConstituicao = calcularModificador(constituicao);
+            const modInteligencia = calcularModificador(inteligencia);
+            const modCarisma = calcularModificador(carisma);
             
-            // Calcular resistência (Constituição + 10)
-            const resistencia = 10 + calcularModificador(constituicao);
+            // Atualizar display dos modificadores
+            document.getElementById('modForca').textContent = modForca;
+            document.getElementById('modDestreza').textContent = modDestreza;
+            document.getElementById('modConstituicao').textContent = modConstituicao;
+            document.getElementById('modInteligencia').textContent = modInteligencia;
+            document.getElementById('modCarisma').textContent = modCarisma;
+            
+            // Calcular resistência CORRETAMENTE: 10 + modificador de Constituição
+            const resistencia = 10 + modConstituicao;
             document.getElementById('resistenciaValor').textContent = resistencia;
             
             // Atualizar PV e PE baseados na classe (simplificado)
@@ -666,14 +683,24 @@
                     break;
             }
             
-            const modConst = calcularModificador(constituicao);
-            const pvMax = pvBase + modConst;
+            const pvMax = pvBase + modConstituicao;
             const peMax = peBase;
             
             document.getElementById('pvMax').value = pvMax;
-            document.getElementById('pvAtual').value = pvMax;
+            // Só atualizar PV atual se for igual ao máximo (para não perder dados)
+            if (parseInt(document.getElementById('pvAtual').value) === parseInt(document.getElementById('pvMax').oldValue) || 
+                parseInt(document.getElementById('pvAtual').value) > pvMax) {
+                document.getElementById('pvAtual').value = pvMax;
+            }
+            document.getElementById('pvMax').oldValue = pvMax;
+            
             document.getElementById('peMax').value = peMax;
-            document.getElementById('peAtual').value = peMax;
+            // Só atualizar PE atual se for igual ao máximo (para não perder dados)
+            if (parseInt(document.getElementById('peAtual').value) === parseInt(document.getElementById('peMax').oldValue) ||
+                parseInt(document.getElementById('peAtual').value) > peMax) {
+                document.getElementById('peAtual').value = peMax;
+            }
+            document.getElementById('peMax').oldValue = peMax;
         }
         
         // Adicionar eventos para atualizar modificadores quando os atributos mudam
@@ -924,12 +951,12 @@
             }
         });
         
-        // Validação de atributos (5-13)
-        document.querySelectorAll('input[type="number"][min="5"][max="13"]').forEach(input => {
+        // Validação de atributos (1-20)
+        document.querySelectorAll('input[type="number"][min="1"][max="20"]').forEach(input => {
             input.addEventListener('change', function() {
                 let value = parseInt(this.value);
-                if (value < 5) this.value = 5;
-                if (value > 13) this.value = 13;
+                if (value < 1) this.value = 1;
+                if (value > 20) this.value = 20;
                 atualizarModificadores();
             });
         });
@@ -942,4 +969,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
