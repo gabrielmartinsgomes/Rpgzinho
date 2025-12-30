@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Personagem - Chainsaw Man RPG</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            background-color: #2d2d2d;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid #444;
+        }
+        
+        h1 {
+            color: #ff4444;
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #ff4444;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #ff7b7b;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #555;
+        }
+        
+        h3 {
+            color: #ff9999;
+            margin: 15px 0 10px 0;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #3a3a3a;
+            border-radius: 8px;
+            border-left: 4px solid #ff4444;
+        }
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #ccc;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: #4a4a4a;
+            border: 1px solid #666;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #ff4444;
+            box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+        }
+        
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .skill-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            background-color: #4a4a4a;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        
+        .skill-item:hover {
+            background-color: #555;
+        }
+        
+        .skill-item input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        button:hover {
+            background-color: #ff6666;
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #saveBtn {
+            background-color: #2e7d32;
+        }
+        
+        #saveBtn:hover {
+            background-color: #3d9b41;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        
+        .stat-box {
+            background-color: #4a4a4a;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #666;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff7b7b;
+            margin: 10px 0;
+        }
+        
+        .modifier {
+            font-size: 18px;
+            color: #ff9999;
+        }
+        
+        .race-class-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .race-class-item {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .contract-section {
+            background-color: #3a2d2d;
+            border-left-color: #cc0000;
+        }
+        
+        .equipment-section {
+            background-color: #2d3a3a;
+            border-left-color: #00aacc;
+        }
+        
+        .notes-section {
+            background-color: #3a3a2d;
+            border-left-color: #cccc00;
+        }
+        
+        @media (max-width: 768px) {
+            .row, .race-class-group {
+                flex-direction: column;
+            }
+            
+            .form-group, .race-class-item {
+                min-width: 100%;
+            }
+            
+            .skills-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ficha de Personagem - Chainsaw Man RPG</h1>
+        
+        <!-- Seção 1: Informações Básicas -->
+        <div class="section">
+            <h2>1. Informações Básicas</h2>
+            <div class="row">
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" placeholder="Ex: Denji">
+                </div>
+                <div class="form-group">
+                    <label for="idade">Idade:</label>
+                    <input type="number" id="idade" min="1" max="100" placeholder="Ex: 16">
+                </div>
+                <div class="form-group">
+                    <label for="sexo">Sexo:</label>
+                    <select id="sexo">
+                        <option value="">Selecione</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="feminino">Feminino</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="race-class-group">
+                <div class="race-class-item">
+                    <h3>Raça</h3>
+                    <select id="raca">
+                        <option value="">Selecione uma raça</option>
+                        <option value="exterminador">Exterminador de Demônios</option>
+                        <option value="infernal">Infernal</option>
+                        <option value="hibrido">Híbrido de Demônio</option>
+                    </select>
+                </div>
+                
+                <div class="race-class-item">
+                    <h3>Classe</h3>
+                    <select id="classe">
+                        <option value="">Selecione uma classe</option>
+                        <option value="espadachim">Espadachim</option>
+                        <option value="atirador">Atirador</option>
+                        <option value="lutador">Lutador</option>
+                        <option value="assassino">Assassino</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="form-group">
+                    <label for="nivel">Nível:</label>
+                    <input type="number" id="nivel" min="1" max="20" value="1">
+                </div>
+                <div class="form-group">
+                    <label for="exp">Experiência:</label>
+                    <input type="text" id="exp" placeholder="Ex: 0/1000">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seção 2: Atributos -->
+        <div class="section">
+            <h2>2. Atributos (5-13 pontos cada)</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <label for="forca">Força</label>
+                    <div class="stat-value">
+                        <input type="number" id="forca" min="5" max="13" value="5" style="width: 60px; text-align: center;">
+                    </div>
+                    <div class="modifier">Modificador: <span id="modForca">-2</span></div>
+                </div>
+                
+                <div class="stat-box">
+                    <label for="destreza">Destreza</label>
+                    <div class="stat-value">
+                        <input type="number" id="destreza" min="5" max="13" value="5" style="width: 60px; text-align: center;">
+                    </div>
+                    <div class="modifier">Modificador: <span id="modDestreza">-2</span></div>
+                </div>
+                
+                <div class="stat-box">
+                    <label for="constituicao">Constituição</label>
+                    <div class="stat-value">
+                        <input type="number" id="constituicao" min="5" max="13" value="5" style="width: 60px; text-align: center;">
+                    </div>
+                    <div class="modifier">Modificador: <span id="modConstituicao">-2</span></div>
+                </div>
+                
+                <div class="stat-box">
+                    <label for="inteligencia">Inteligência</label>
+                    <div class="stat-value">
+                        <input type="number" id="inteligencia" min="5" max="13" value="5" style="width: 60px; text-align: center;">
+                    </div>
+                    <div class="modifier">Modificador: <span id="modInteligencia">-2</span></div>
+                </div>
+                
+                <div class="stat-box">
+                    <label for="carisma">Carisma</label>
+                    <div class="stat-value">
+                        <input type="number" id="carisma" min="5" max="13" value="5" style="width: 60px; text-align: center;">
+                    </div>
+                    <div class="modifier">Modificador: <span id="modCarisma">-2</span></div>
+                </div>
+                
+                <div class="stat-box">
+                    <label for="resistencia">Resistência</label>
+                    <div class="stat-value" id="resistenciaValor">14</div>
+                    <div class="modifier">(Constituição + 10)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seção 3: Status -->
+        <div class="section">
+            <h2>3. Status</h2>
+            <div class="row">
+                <div class="form-group">
+                    <label for="pvMax">PV Máximo:</label>
+                    <input type="number" id="pvMax" min="1" value="10">
+                </div>
+                <div class="form-group">
+                    <label for="pvAtual">PV Atual:</label>
+                    <input type="number" id="pvAtual" min="0" value="10">
+                </div>
+                <div class="form-group">
+                    <label for="peMax">PE Máximo:</label>
+                    <input type="number" id="peMax" min="1" value="5">
+                </div>
+                <div class="form-group">
+                    <label for="peAtual">PE Atual:</label>
+                    <input type="number" id="peAtual" min="0" value="5">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="sangue">Sangue (ml):</label>
+                    <input type="number" id="sangue" min="0" max="1500" value="1500">
+                </div>
+                <div class="form-group">
+                    <label for="phb">PHB (Pontos de Habilidade):</label>
+                    <input type="number" id="phb" min="0" value="0">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seção 4: Perícias -->
+        <div class="section">
+            <h2>4. Perícias (Marque as proficientes)</h2>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <input type="checkbox" id="acrobacia">
+                    <label for="acrobacia">Acrobacia</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="adestramento">
+                    <label for="adestramento">Adestramento</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="artes">
+                    <label for="artes">Artes</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="atletismo">
+                    <label for="atletismo">Atletismo</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="atualidades">
+                    <label for="atualidades">Atualidades</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="ciencias">
+                    <label for="ciencias">Ciências</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="crime">
+                    <label for="crime">Crime</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="diplomacia">
+                    <label for="diplomacia">Diplomacia</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="enganação">
+                    <label for="enganação">Enganação</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="fortitude">
+                    <label for="fortitude">Fortitude</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="furtividade">
+                    <label for="furtividade">Furtividade</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="iniciativa">
+                    <label for="iniciativa">Iniciativa</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="intimidação">
+                    <label for="intimidação">Intimidação</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="intuição">
+                    <label for="intuição">Intuição</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="investigação">
+                    <label for="investigação">Investigação</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="luta">
+                    <label for="luta">Luta</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="medicina">
+                    <label for="medicina">Medicina</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="percepção">
+                    <label for="percepção">Percepção</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="pilotagem">
+                    <label for="pilotagem">Pilotagem</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="pontaria">
+                    <label for="pontaria">Pontaria</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="reflexos">
+                    <label for="reflexos">Reflexos</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="religião">
+                    <label for="religião">Religião</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="sobrevivência">
+                    <label for="sobrevivência">Sobrevivência</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="tática">
+                    <label for="tática">Tática</label>
+                </div>
+                <div class="skill-item">
+                    <input type="checkbox" id="tecnologia">
+                    <label for="tecnologia">Tecnologia</label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seção 5: Equipamento -->
+        <div class="section equipment-section">
+            <h2>5. Equipamento</h2>
+            <div class="row">
+                <div class="form-group">
+                    <label for="armaPrincipal">Arma Principal:</label>
+                    <input type="text" id="armaPrincipal" placeholder="Ex: Lâmina Cega">
+                </div>
+                <div class="form-group">
+                    <label for="armaSecundaria">Arma Secundária:</label>
+                    <input type="text" id="armaSecundaria" placeholder="Ex: Revólver">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="armadura">Armadura:</label>
+                    <input type="text" id="armadura" placeholder="Ex: Colete Leve">
+                </div>
+                <div class="form-group">
+                    <label for="dinheiro">Dinheiro (Ienes):</label>
+                    <input type="text" id="dinheiro" placeholder="Ex: 5000">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="itens">Itens e Suprimentos:</label>
+                <textarea id="itens" placeholder="Liste seus itens aqui..."></textarea>
+            </div>
+        </div>
+        
+        <!-- Seção 6: Habilidades -->
+        <div class="section">
+            <h2>6. Habilidades</h2>
+            <div class="form-group">
+                <label for="habilidades">Habilidades Adquiridas (com custo em PHB):</label>
+                <textarea id="habilidades" placeholder="Ex: 1. Tiro Certeiro (4 PHB)&#10;2. Fúria (3 PHB)"></textarea>
+            </div>
+        </div>
+        
+        <!-- Seção 7: Contratos -->
+        <div class="section contract-section">
+            <h2>7. Contratos (Opcional)</h2>
+            <div class="row">
+                <div class="form-group">
+                    <label for="demonio">Demônio Contratado:</label>
+                    <input type="text" id="demonio" placeholder="Ex: Demônio da Motosserra">
+                </div>
+                <div class="form-group">
+                    <label for="classeContrato">Classe do Contrato:</label>
+                    <select id="classeContrato">
+                        <option value="">Nenhum</option>
+                        <option value="I">Classe I (Mais Poderoso)</option>
+                        <option value="II">Classe II</option>
+                        <option value="III">Classe III (Mais Fraco)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="habilidadeContrato">Habilidade Concedida:</label>
+                    <input type="text" id="habilidadeContrato" placeholder="Ex: Transformação em Motosserra">
+                </div>
+                <div class="form-group">
+                    <label for="custoSangue">Custo em Sangue (ml):</label>
+                    <input type="number" id="custoSangue" min="0" value="0">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="condicoesContrato">Condições do Contrato:</label>
+                <textarea id="condicoesContrato" placeholder="Descreva as condições e riscos do contrato..."></textarea>
+            </div>
+        </div>
+        
+        <!-- Seção 8: Descrição e História -->
+        <div class="section">
+            <h2>8. Descrição e História</h2>
+            <div class="form-group">
+                <label for="aparencia">Aparência Física:</label>
+                <textarea id="aparencia" placeholder="Descreva a aparência do seu personagem..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="sonho">Sonho:</label>
+                <textarea id="sonho" placeholder="Qual é o sonho do seu personagem?"></textarea>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="caminhoEtico">Caminho Ético:</label>
+                    <select id="caminhoEtico">
+                        <option value="">Selecione</option>
+                        <option value="etico">Ético</option>
+                        <option value="indiferente">Indiferente</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="historia">História e Personalidade:</label>
+                <textarea id="historia" placeholder="Descreva a história e personalidade do seu personagem..."></textarea>
+            </div>
+        </div>
+        
+        <!-- Seção 9: Anotações -->
+        <div class="section notes-section">
+            <h2>9. Anotações e Registros</h2>
+            <div class="form-group">
+                <label for="missoes">Missões Completadas:</label>
+                <textarea id="missoes" placeholder="Registre as missões completadas..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="inimigos">Inimigos Derrotados:</label>
+                <textarea id="inimigos" placeholder="Registre os inimigos derrotados..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="notas">Notas do Jogador:</label>
+                <textarea id="notas" placeholder="Faça suas anotações aqui..."></textarea>
+            </div>
+        </div>
+        
+        <!-- Botões de ação -->
+        <div class="button-group">
+            <button id="printBtn">Imprimir Ficha</button>
+            <button id="saveBtn">Salvar Ficha</button>
+            <button id="loadBtn">Carregar Ficha</button>
+            <button id="resetBtn">Limpar Tudo</button>
+        </div>
+    </div>
+
+    <script>
+        // Calcular modificadores baseados nos valores dos atributos
+        function calcularModificador(valor) {
+            if (valor <= 2) return -2;
+            if (valor <= 5) return -1;
+            if (valor <= 7) return 0;
+            if (valor <= 10) return 1;
+            if (valor <= 13) return 2;
+            if (valor <= 16) return 3;
+            if (valor <= 19) return 4;
+            return 5; // valor 20
+        }
+        
+        // Atualizar todos os modificadores
+        function atualizarModificadores() {
+            const forca = parseInt(document.getElementById('forca').value) || 5;
+            const destreza = parseInt(document.getElementById('destreza').value) || 5;
+            const constituicao = parseInt(document.getElementById('constituicao').value) || 5;
+            const inteligencia = parseInt(document.getElementById('inteligencia').value) || 5;
+            const carisma = parseInt(document.getElementById('carisma').value) || 5;
+            
+            document.getElementById('modForca').textContent = calcularModificador(forca);
+            document.getElementById('modDestreza').textContent = calcularModificador(destreza);
+            document.getElementById('modConstituicao').textContent = calcularModificador(constituicao);
+            document.getElementById('modInteligencia').textContent = calcularModificador(inteligencia);
+            document.getElementById('modCarisma').textContent = calcularModificador(carisma);
+            
+            // Calcular resistência (Constituição + 10)
+            const resistencia = 10 + calcularModificador(constituicao);
+            document.getElementById('resistenciaValor').textContent = resistencia;
+            
+            // Atualizar PV e PE baseados na classe (simplificado)
+            const classe = document.getElementById('classe').value;
+            let pvBase = 10, peBase = 5;
+            
+            switch(classe) {
+                case 'espadachim':
+                    pvBase = 15;
+                    peBase = 4;
+                    break;
+                case 'atirador':
+                    pvBase = 12;
+                    peBase = 5;
+                    break;
+                case 'lutador':
+                    pvBase = 18;
+                    peBase = 3;
+                    break;
+                case 'assassino':
+                    pvBase = 14;
+                    peBase = 5;
+                    break;
+            }
+            
+            const modConst = calcularModificador(constituicao);
+            const pvMax = pvBase + modConst;
+            const peMax = peBase;
+            
+            document.getElementById('pvMax').value = pvMax;
+            document.getElementById('pvAtual').value = pvMax;
+            document.getElementById('peMax').value = peMax;
+            document.getElementById('peAtual').value = peMax;
+        }
+        
+        // Adicionar eventos para atualizar modificadores quando os atributos mudam
+        document.getElementById('forca').addEventListener('change', atualizarModificadores);
+        document.getElementById('destreza').addEventListener('change', atualizarModificadores);
+        document.getElementById('constituicao').addEventListener('change', atualizarModificadores);
+        document.getElementById('inteligencia').addEventListener('change', atualizarModificadores);
+        document.getElementById('carisma').addEventListener('change', atualizarModificadores);
+        document.getElementById('classe').addEventListener('change', atualizarModificadores);
+        
+        // Inicializar modificadores
+        atualizarModificadores();
+        
+        // Botão de imprimir
+        document.getElementById('printBtn').addEventListener('click', function() {
+            window.print();
+        });
+        
+        // Botão de salvar
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            const fichaData = {
+                nome: document.getElementById('nome').value,
+                idade: document.getElementById('idade').value,
+                sexo: document.getElementById('sexo').value,
+                raca: document.getElementById('raca').value,
+                classe: document.getElementById('classe').value,
+                nivel: document.getElementById('nivel').value,
+                exp: document.getElementById('exp').value,
+                
+                forca: document.getElementById('forca').value,
+                destreza: document.getElementById('destreza').value,
+                constituicao: document.getElementById('constituicao').value,
+                inteligencia: document.getElementById('inteligencia').value,
+                carisma: document.getElementById('carisma').value,
+                
+                pvMax: document.getElementById('pvMax').value,
+                pvAtual: document.getElementById('pvAtual').value,
+                peMax: document.getElementById('peMax').value,
+                peAtual: document.getElementById('peAtual').value,
+                sangue: document.getElementById('sangue').value,
+                phb: document.getElementById('phb').value,
+                
+                habilidades: document.getElementById('habilidades').value,
+                
+                armaPrincipal: document.getElementById('armaPrincipal').value,
+                armaSecundaria: document.getElementById('armaSecundaria').value,
+                armadura: document.getElementById('armadura').value,
+                dinheiro: document.getElementById('dinheiro').value,
+                itens: document.getElementById('itens').value,
+                
+                demonio: document.getElementById('demonio').value,
+                classeContrato: document.getElementById('classeContrato').value,
+                habilidadeContrato: document.getElementById('habilidadeContrato').value,
+                custoSangue: document.getElementById('custoSangue').value,
+                condicoesContrato: document.getElementById('condicoesContrato').value,
+                
+                aparencia: document.getElementById('aparencia').value,
+                sonho: document.getElementById('sonho').value,
+                caminhoEtico: document.getElementById('caminhoEtico').value,
+                historia: document.getElementById('historia').value,
+                
+                missoes: document.getElementById('missoes').value,
+                inimigos: document.getElementById('inimigos').value,
+                notas: document.getElementById('notas').value,
+                
+                // Salvar perícias marcadas
+                pericias: {
+                    acrobacia: document.getElementById('acrobacia').checked,
+                    adestramento: document.getElementById('adestramento').checked,
+                    artes: document.getElementById('artes').checked,
+                    atletismo: document.getElementById('atletismo').checked,
+                    atualidades: document.getElementById('atualidades').checked,
+                    ciencias: document.getElementById('ciencias').checked,
+                    crime: document.getElementById('crime').checked,
+                    diplomacia: document.getElementById('diplomacia').checked,
+                    enganacao: document.getElementById('enganação').checked,
+                    fortitude: document.getElementById('fortitude').checked,
+                    furtividade: document.getElementById('furtividade').checked,
+                    iniciativa: document.getElementById('iniciativa').checked,
+                    intimidacao: document.getElementById('intimidação').checked,
+                    intuicao: document.getElementById('intuição').checked,
+                    investigacao: document.getElementById('investigação').checked,
+                    luta: document.getElementById('luta').checked,
+                    medicina: document.getElementById('medicina').checked,
+                    percepcao: document.getElementById('percepção').checked,
+                    pilotagem: document.getElementById('pilotagem').checked,
+                    pontaria: document.getElementById('pontaria').checked,
+                    reflexos: document.getElementById('reflexos').checked,
+                    religiao: document.getElementById('religião').checked,
+                    sobrevivencia: document.getElementById('sobrevivência').checked,
+                    tatica: document.getElementById('tática').checked,
+                    tecnologia: document.getElementById('tecnologia').checked
+                }
+            };
+            
+            const dataStr = JSON.stringify(fichaData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `ficha_chainsawman_${fichaData.nome || 'personagem'}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            alert('Ficha salva como arquivo JSON!');
+        });
+        
+        // Botão de carregar
+        document.getElementById('loadBtn').addEventListener('click', function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const fichaData = JSON.parse(e.target.result);
+                        
+                        // Carregar dados básicos
+                        document.getElementById('nome').value = fichaData.nome || '';
+                        document.getElementById('idade').value = fichaData.idade || '';
+                        document.getElementById('sexo').value = fichaData.sexo || '';
+                        document.getElementById('raca').value = fichaData.raca || '';
+                        document.getElementById('classe').value = fichaData.classe || '';
+                        document.getElementById('nivel').value = fichaData.nivel || '1';
+                        document.getElementById('exp').value = fichaData.exp || '';
+                        
+                        // Carregar atributos
+                        document.getElementById('forca').value = fichaData.forca || '5';
+                        document.getElementById('destreza').value = fichaData.destreza || '5';
+                        document.getElementById('constituicao').value = fichaData.constituicao || '5';
+                        document.getElementById('inteligencia').value = fichaData.inteligencia || '5';
+                        document.getElementById('carisma').value = fichaData.carisma || '5';
+                        
+                        // Carregar status
+                        document.getElementById('pvMax').value = fichaData.pvMax || '10';
+                        document.getElementById('pvAtual').value = fichaData.pvAtual || '10';
+                        document.getElementById('peMax').value = fichaData.peMax || '5';
+                        document.getElementById('peAtual').value = fichaData.peAtual || '5';
+                        document.getElementById('sangue').value = fichaData.sangue || '1500';
+                        document.getElementById('phb').value = fichaData.phb || '0';
+                        
+                        // Carregar habilidades
+                        document.getElementById('habilidades').value = fichaData.habilidades || '';
+                        
+                        // Carregar equipamento
+                        document.getElementById('armaPrincipal').value = fichaData.armaPrincipal || '';
+                        document.getElementById('armaSecundaria').value = fichaData.armaSecundaria || '';
+                        document.getElementById('armadura').value = fichaData.armadura || '';
+                        document.getElementById('dinheiro').value = fichaData.dinheiro || '';
+                        document.getElementById('itens').value = fichaData.itens || '';
+                        
+                        // Carregar contratos
+                        document.getElementById('demonio').value = fichaData.demonio || '';
+                        document.getElementById('classeContrato').value = fichaData.classeContrato || '';
+                        document.getElementById('habilidadeContrato').value = fichaData.habilidadeContrato || '';
+                        document.getElementById('custoSangue').value = fichaData.custoSangue || '0';
+                        document.getElementById('condicoesContrato').value = fichaData.condicoesContrato || '';
+                        
+                        // Carregar descrição
+                        document.getElementById('aparencia').value = fichaData.aparencia || '';
+                        document.getElementById('sonho').value = fichaData.sonho || '';
+                        document.getElementById('caminhoEtico').value = fichaData.caminhoEtico || '';
+                        document.getElementById('historia').value = fichaData.historia || '';
+                        
+                        // Carregar anotações
+                        document.getElementById('missoes').value = fichaData.missoes || '';
+                        document.getElementById('inimigos').value = fichaData.inimigos || '';
+                        document.getElementById('notas').value = fichaData.notas || '';
+                        
+                        // Carregar perícias
+                        if (fichaData.pericias) {
+                            document.getElementById('acrobacia').checked = fichaData.pericias.acrobacia || false;
+                            document.getElementById('adestramento').checked = fichaData.pericias.adestramento || false;
+                            document.getElementById('artes').checked = fichaData.pericias.artes || false;
+                            document.getElementById('atletismo').checked = fichaData.pericias.atletismo || false;
+                            document.getElementById('atualidades').checked = fichaData.pericias.atualidades || false;
+                            document.getElementById('ciencias').checked = fichaData.pericias.ciencias || false;
+                            document.getElementById('crime').checked = fichaData.pericias.crime || false;
+                            document.getElementById('diplomacia').checked = fichaData.pericias.diplomacia || false;
+                            document.getElementById('enganação').checked = fichaData.pericias.enganação || false;
+                            document.getElementById('fortitude').checked = fichaData.pericias.fortitude || false;
+                            document.getElementById('furtividade').checked = fichaData.pericias.furtividade || false;
+                            document.getElementById('iniciativa').checked = fichaData.pericias.iniciativa || false;
+                            document.getElementById('intimidação').checked = fichaData.pericias.intimidacao || false;
+                            document.getElementById('intuição').checked = fichaData.pericias.intuicao || false;
+                            document.getElementById('investigação').checked = fichaData.pericias.investigacao || false;
+                            document.getElementById('luta').checked = fichaData.pericias.luta || false;
+                            document.getElementById('medicina').checked = fichaData.pericias.medicina || false;
+                            document.getElementById('percepção').checked = fichaData.pericias.percepcao || false;
+                            document.getElementById('pilotagem').checked = fichaData.pericias.pilotagem || false;
+                            document.getElementById('pontaria').checked = fichaData.pericias.pontaria || false;
+                            document.getElementById('reflexos').checked = fichaData.pericias.reflexos || false;
+                            document.getElementById('religião').checked = fichaData.pericias.religiao || false;
+                            document.getElementById('sobrevivência').checked = fichaData.pericias.sobrevivencia || false;
+                            document.getElementById('tática').checked = fichaData.pericias.tatica || false;
+                            document.getElementById('tecnologia').checked = fichaData.pericias.tecnologia || false;
+                        }
+                        
+                        // Atualizar cálculos
+                        atualizarModificadores();
+                        
+                        alert('Ficha carregada com sucesso!');
+                    } catch (error) {
+                        alert('Erro ao carregar a ficha: ' + error.message);
+                    }
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        });
+        
+        // Botão de reset
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            if (confirm('Tem certeza que deseja limpar toda a ficha? Todos os dados serão perdidos.')) {
+                // Resetar todos os campos
+                document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => {
+                    el.value = '';
+                });
+                
+                document.querySelectorAll('select').forEach(el => {
+                    el.selectedIndex = 0;
+                });
+                
+                document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+                    el.checked = false;
+                });
+                
+                // Resetar valores padrão
+                document.getElementById('forca').value = '5';
+                document.getElementById('destreza').value = '5';
+                document.getElementById('constituicao').value = '5';
+                document.getElementById('inteligencia').value = '5';
+                document.getElementById('carisma').value = '5';
+                document.getElementById('nivel').value = '1';
+                document.getElementById('sangue').value = '1500';
+                
+                // Atualizar cálculos
+                atualizarModificadores();
+                
+                alert('Ficha limpa com sucesso!');
+            }
+        });
+        
+        // Validação de atributos (5-13)
+        document.querySelectorAll('input[type="number"][min="5"][max="13"]').forEach(input => {
+            input.addEventListener('change', function() {
+                let value = parseInt(this.value);
+                if (value < 5) this.value = 5;
+                if (value > 13) this.value = 13;
+                atualizarModificadores();
+            });
+        });
+        
+        // Validação de nível (1-20)
+        document.getElementById('nivel').addEventListener('change', function() {
+            let value = parseInt(this.value);
+            if (value < 1) this.value = 1;
+            if (value > 20) this.value = 20;
+        });
+    </script>
+</body>
+</html>
